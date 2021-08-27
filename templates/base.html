@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <!-- title -->
+        <title>{% block title %}{% endblock title%}</title>
+        <!-- <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"> -->
+        <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/monokai.min.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- header -->
+        {% include 'header.html' %}
+        <!-- content -->
+        {% block content %}{% endblock content %}
+        <!-- footer -->
+        {% include 'footer.html' %}
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.9.8/popper.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/layer.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+        <!-- table 有问题其实 -->
+        <script>
+            $('div#article_body table').addClass('table table-bordered');
+            $('div#article_body thead').addClass('thead-light');
+        </script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>
