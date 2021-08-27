@@ -19,8 +19,10 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from article.views import article_list
 
 urlpatterns = [
+    path('', article_list, name='home'),
     path('admin/', admin.site.urls),
 
     # article
