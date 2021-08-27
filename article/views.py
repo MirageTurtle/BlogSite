@@ -7,24 +7,39 @@ from .forms import ArticlePostForm
 from django.contrib.auth.models import User
 import markdown
 from django.core.paginator import Paginator
+from django.db.models import Q  # Q object
 
 # Create your views here.
 
 
 def article_list(request):
-    # all articles
-    if request.GET.get('order') == 'total_views':
-        article_list = ArticlePost.objects.all().order_by('-total_views')
-        order = 'total_views'
+    search = request.GET.get('search')
+    order = request.GET.get('order')
+    if search:
+        if order == 'total_views':
+            article_list = ArticlePost.objects.filter(
+                Q(title__icontains=search) |
+                Q(body__icontains=search)  # body指模型的body字段 icontains指不区分大小写的包含
+            ).order_by('-total_views')
+        else:
+            article_list = ArticlePost.objects.filter(
+                Q(title__icontains=search) |
+                Q(body__icontains=search)
+            )
     else:
-        article_list = ArticlePost.objects.all()
-        order = 'normal'
+        search = ''
+        if order == 'total_views':
+            article_list = ArticlePost.objects.all().order_by('-total_views')
+        else:
+            article_list = ArticlePost.objects.all()
+
     paginator = Paginator(article_list, 3)  # 3 means tree articles in every page
     page = request.GET.get('page')
     articles = paginator.get_page(page)
     context = {
         'articles': articles,
-        'order': order
+        'order': order,
+        'search': search
     }
     return render(request, 'article/list.html', context)
 

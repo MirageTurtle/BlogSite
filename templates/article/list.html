@@ -2,12 +2,12 @@
 <!-- {% for article in articles %}
     <p>{{ article.title }}</p> -->
 <!-- {% endfor %} -->
-    
+
 <!-- extends表示继承自base.html -->
 {% load static %}
 
 {% block title%}
-    首页
+首页
 {% endblock title%}
 
 {% block content %}
@@ -16,18 +16,37 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}">
+                <a href="{% url 'article:article_list' %}?search={{search}}">
                     最新
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}?order=total_views">
+                <a href="{% url 'article:article_list' %}?order=total_views&search={{search}}">
                     最热
                 </a>
             </li>
         </ol>
     </nav>
+    {% comment %} search bar {% endcomment %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <form class="form-inline">
+                <label class="sr-only">content</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" name="search" placeholder="Search…" required>
+            </form>
+        </div>
+    </div>
+    
+    {% if search %}
+        {% if articles %}
+        <h4>The search result about <span style="color: brown">{{search}}</span>:</h4>
+        {% else %}
+        <h4>Nothing about <span style="color: brown">{{search}}</span>.</h4>
+        {%endif%}
+    {% endif %}
+    <hr>
 </div>
+
 
 <div class="container">
     <div class="row mt-2">
@@ -58,11 +77,11 @@
         <span class="step-links">
             <!-- if this page isn't the first page -->
             {% if articles.has_previous %}
-            <a href="?page=1&order={{order}}" class="btn btn-success">
+            <a href="?page=1&order={{order}}&search={{search}}" class="btn btn-success">
                 &laquo; 1
             </a>
             <span>…</span>
-            <a href="?page={{articles.previous_page_number}}&&order={{order}}" class="btn btn-secondary">
+            <a href="?page={{articles.previous_page_number}}&order={{order}}&search={{search}}" class="btn btn-secondary">
                 {{articles.previous_page_number}}
             </a>
             {% endif %}
@@ -72,11 +91,11 @@
             </span>
 
             {% if articles.has_next %}
-            <a href="?page={{articles.next_page_number}}&&order={{order}}" class="btn btn-secondary">
+            <a href="?page={{articles.next_page_number}}&order={{order}}&search={{search}}" class="btn btn-secondary">
                 {{articles.next_page_number}}
             </a>
             <span>…</span>
-            <a href="?page={{articles.paginator.num_pages}}&&order={{order}}" class="btn btn-success">
+            <a href="?page={{articles.paginator.num_pages}}&order={{order}}&search={{search}}" class="btn btn-success">
                 {{articles.paginator.num_pages}} &raquo;
             </a>
             {% endif %}
